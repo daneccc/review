@@ -1,56 +1,30 @@
 module Api
     module V1
-        class ReviewsController < ApplicationController
-            def index
-                airlines = Airline.all
-
-                render json: AirlineSerializer.new(airlines, options).serilized_json
-            end
-
-            def show
-                airline = Airline.find_by(slug: params[:slug])
-
-                render json: AirlineSerializer.new(airline, options).serialized_json
-            end
-
+        class ReviewsController < ApplicationController    
             def create
-                airline = Airline.new(airline_params)
+                review = Review.new(review_params)
 
-                if airline.save
-                    render json: AirlineSerializer.new(airline).serialized_json
+                if review.save
+                    render json: ReviewSerializer.new(review).serialized_json
                 else
-                    render json: { error: airline.errors.messages }, status: 422
-                end
-            end
-
-            def update
-                airline = Airline.find_by(slug: params[:slug])
-
-                if airline.update(airline_params)
-                    render json: AirlineSerializer.new(airline, options).serialized_json
-                else
-                    render json: { error: airline.errors.messages }, status: 422
+                    render json: { error: review.erros.messages }, status: 422
                 end
             end
 
             def destroy
-                airline = Airline.find_by(slug: params[:slug])
+                review = Review.find(params[:id])
 
-                if airline.destroy
+                if review.destroy
                     head :no_content
                 else
-                    render json: { error: airline.errors.messages }, status: 422
+                    render json: { error: review.erros.messages }, status: 422
                 end
             end
 
             private
 
-            def airline_params
-                params.require(:airline).permit(:name, :image_url)
-            end
-
-            def options
-                @options ||= { include: %[reviews]}
+            def review_params
+                params.require(:review).permit(:title, :description, :score, :airline_id)
             end
         end
     end
