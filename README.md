@@ -1,7 +1,4 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### A flight reviews app built with Ruby on Rails and React.js.
 
 Things you may want to cover:
 
